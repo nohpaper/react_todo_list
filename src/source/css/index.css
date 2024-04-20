@@ -15,3 +15,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+@layer base {
+  html {
+    font-size: 20px !important;
+    @media screen(desktop-xs) {
+      font-size: 15px;
+    }
+    @media screen(desktop-md) {
+      font-size: 20px;
+    }
+  }
+}
+
+.test {
+  @apply flex justify-center align-middle
+}

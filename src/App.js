@@ -1,23 +1,14 @@
 import logo from './logo.svg';
-import './App.css';
+import './source/css/App.css';
+import {Category, Bord, CheckList} from "./source/elements/memo";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header bg-red01">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p className="text-3xl font-bold underline ">
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Bord bgColor={"red"} isList={true}>
+        <Category value="^^"/>
+        <CheckList></CheckList>
+      </Bord>
     </div>
   );
 }
