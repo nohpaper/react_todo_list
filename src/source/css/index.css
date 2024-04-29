@@ -29,6 +29,16 @@ code {
   }
 }
 
-.test {
-  @apply flex justify-center align-middle
+.color_select_wrap {
+  @apply rem:w-[20px] rem:h-[20px] rem:mx-[8px] inline-block relative text-[0px]
+}
+
+.color_select_input {
+  @apply absolute top-[0] left-[0] opacity-[0] z-[-1]
+}
+
+.color_select_label {
+  @apply cursor-pointer
+  before:content-[''] before:w-[100%] before:h-[100%] before:absolute before:top-[0] before:left-[0] before:rounded-100%
+  after:content-[''] rem:after:w-[10px] rem:after:h-[10px] after:absolute after:top-[50%] after:left-[50%] rem:after:mt-[-5px] rem:after:ml-[-5px] after:rounded-100%
 }

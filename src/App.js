@@ -9,7 +9,7 @@ function App() {
    *
    * */
   const [ selectColor] = useState("yellow");
-  const [ bordColor ] = useState([
+  const [ colorChart ] = useState([
     {
       name: "red",
       chart: {
@@ -139,14 +139,14 @@ function App() {
   ])
   return (
     <div className="App">
-      <TodoList/>
-      <Bord isList={true} bgColor={selectColor} bordColor={bordColor}>
-        <Category value="^^" bgColor={selectColor} bordColor={bordColor}/>
+      <TodoList colorChart={colorChart}/>
+      <Bord isList={true} bgColor={selectColor} colorChart={colorChart}>
+        <Category value="^^" bgColor={selectColor} colorChart={colorChart}/>
         <div className="rem:pt-[10px]">
-          <CheckList listNum={"1"} bgColor={selectColor} bordColor={bordColor}></CheckList>
-          <CheckList listNum={"2"} bgColor={selectColor} bordColor={bordColor}></CheckList>
-          <CheckList listNum={"3"} bgColor={selectColor} bordColor={bordColor}></CheckList>
-          <CheckList listNum={"4"} bgColor={selectColor} bordColor={bordColor}></CheckList>
+          <CheckList listNum={"1"} bgColor={selectColor} colorChart={colorChart}></CheckList>
+          <CheckList listNum={"2"} bgColor={selectColor} colorChart={colorChart}></CheckList>
+          <CheckList listNum={"3"} bgColor={selectColor} colorChart={colorChart}></CheckList>
+          <CheckList listNum={"4"} bgColor={selectColor} colorChart={colorChart}></CheckList>
         </div>
       </Bord>
     </div>

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 
 export function Bord(props) {
-  const chooseColor = props.bordColor.find((color)=> color.name === props.bgColor);
+  const chooseColor = props.colorChart.find((color)=> color.name === props.bgColor);
 
   return (
     <div className={`${props.isList ? "rem:w-[350px]" : "w-[100%]"} rem:min-h-[250px] rem:pt-[13px] rem:pr-[25px] rem:pb-[25px] rem:pl-[15px] box-border rounded-20 ${chooseColor.chart.bg.default100}`}>{ props.children }</div>
@@ -11,7 +11,7 @@ export function Bord(props) {
 }
 
 export function Category(props){
-  const chooseColor = props.bordColor.find((color)=> color.name === props.bgColor);
+  const chooseColor = props.colorChart.find((color)=> color.name === props.bgColor);
 
   return (
     /*<input type="text" name="category" className={classNames("rounded-20 py-[6px] pr-[16px] pl-[35px]", {
@@ -27,7 +27,7 @@ export function Category(props){
 }
 
 export function CheckButton(props){
-  const chooseColor = props.bordColor.find((color)=> color.name === props.bgColor);
+  const chooseColor = props.colorChart.find((color)=> color.name === props.bgColor);
   //console.log(props.listStatus[0].isDone);
 
 
@@ -53,7 +53,7 @@ export function CheckButton(props){
 }
 
 export function MoreButton(props) {
-  const chooseColor = props.bordColor.find((color)=> color.name === props.bgColor);
+  const chooseColor = props.colorChart.find((color)=> color.name === props.bgColor);
   const [ isMore, setIsMore ] = useState(false);
 
   return (
@@ -97,7 +97,7 @@ export function CheckList(props){
   const [ listStatus, setListStatus ] = useState([
     { isDone: false, isImportant: false, }
   ]);
-  const chooseColor = props.bordColor.find((color)=> color.name === props.bgColor);
+  const chooseColor = props.colorChart.find((color)=> color.name === props.bgColor);
   const isActiveCss = (isDone, isImportant) => {
     if(isDone && isImportant){
       return `${chooseColor.chart.text.default400} line-through font-bold`
@@ -112,14 +112,14 @@ export function CheckList(props){
 
   return (
     <div className="rem:h-[40px] rem:pt-[18px] text-left">
-      <CheckButton listNum={props.listNum} bgColor={props.bgColor} bordColor={props.bordColor} listStatus={listStatus} setListStatus={setListStatus}></CheckButton>
+      <CheckButton listNum={props.listNum} bgColor={props.bgColor} colorChart={props.colorChart} listStatus={listStatus} setListStatus={setListStatus}></CheckButton>
       <input type="text" disabled={listStatus[0].isDone} className={`
         rem:w-[232px] rem:h-[22px] align-top rem:pl-[16px] rem:pr-[10px] rem:text-[16px] box-content bg-transparent
         focus:outline-0 rem:focus:border-b-[1px] focus:border-dashed ${chooseColor.chart.border.focus300}
         ${isActiveCss(listStatus[0].isDone, listStatus[0].isImportant)}
       `}
       />
-      <MoreButton bgColor={props.bgColor} bordColor={props.bordColor} listStatus={listStatus} setListStatus={setListStatus} ></MoreButton>
+      <MoreButton bgColor={props.bgColor} colorChart={props.colorChart} listStatus={listStatus} setListStatus={setListStatus} ></MoreButton>
     </div>
   )
 }
