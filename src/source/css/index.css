@@ -30,7 +30,7 @@ code {
 }
 
 .color_select_wrap {
-  @apply rem:w-[20px] rem:h-[20px] rem:mx-[8px] inline-block relative text-[0px]
+  @apply rem:w-[20px] rem:h-[20px] inline-block align-top relative rem:mx-[8px] rem:my-[12px] text-[0px]
 }
 
 .color_select_input {

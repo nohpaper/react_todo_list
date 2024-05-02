@@ -26,6 +26,9 @@ function App() {
         border: {
           "default300": "border-red-300", "focus300": "focus:border-red-300",
         },
+        placeholder: {
+          "default300": "placeholder-red-300",
+        },
       }
     },
     {
@@ -43,6 +46,9 @@ function App() {
         },
         border: {
           "default300": "border-yellow-300", "focus300": "focus:border-yellow-300",
+        },
+        placeholder: {
+          "default300": "placeholder-yellow-300",
         },
       }
     },
@@ -62,6 +68,9 @@ function App() {
         border: {
           "default300": "border-lightGreen-300", "focus300": "focus:border-lightGreen-300",
         },
+        placeholder: {
+          "default300": "placeholder-lightGreen-300",
+        },
       }
     },
     {
@@ -79,6 +88,9 @@ function App() {
         },
         border: {
           "default300": "border-blue-300", "focus300": "focus:border-blue-300",
+        },
+        placeholder: {
+          "default300": "placeholder-blue-300",
         },
       }
     },
@@ -98,6 +110,9 @@ function App() {
         border: {
           "default300": "border-purple-300", "focus300": "focus:border-purple-300",
         },
+        placeholder: {
+          "default300": "placeholder-purple-300",
+        },
       }
     },
     {
@@ -116,6 +131,9 @@ function App() {
         border: {
           "default300": "border-gray-300", "focus300": "focus:border-gray-300",
         },
+        placeholder: {
+          "default300": "placeholder-gray-300",
+        },
       }
     },
     {
@@ -133,6 +151,9 @@ function App() {
         },
         border: {
           "default300": "border-pink-300", "focus300": "focus:border-pink-300",
+        },
+        placeholder: {
+          "default300": "placeholder-pink-300",
         },
       }
     },
