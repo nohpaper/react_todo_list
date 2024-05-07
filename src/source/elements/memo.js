@@ -2,8 +2,12 @@ import classNames from "classnames";
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 
+import { useSelector } from 'react-redux';
+
 export function Bord(props) {
-  const chooseColor = props.colorChart.find((color)=> color.name === props.bgColor);
+  const selectColor = useSelector((state) => state.color.value);
+  const colorChart = useSelector((state) => state.chart);
+  const chooseColor = colorChart.find((color)=> color.name === selectColor);
 
   return (
     <div className={`${props.isList ? "rem:w-[350px]" : "w-[100%]"} rem:min-h-[250px] rem:pt-[13px] rem:pr-[25px] rem:pb-[25px] rem:pl-[15px] box-border rounded-20 ${chooseColor.chart.bg.default100}`}>{ props.children }</div>
@@ -11,7 +15,9 @@ export function Bord(props) {
 }
 
 export function Category(props){
-  const chooseColor = props.colorChart.find((color)=> color.name === props.bgColor);
+  const selectColor = useSelector((state) => state.color.value);
+  const colorChart = useSelector((state) => state.chart);
+  const chooseColor = colorChart.find((color)=> color.name === selectColor);
 
   return (
     /*<input type="text" name="category" className={classNames("rounded-20 py-[6px] pr-[16px] pl-[35px]", {
@@ -27,8 +33,9 @@ export function Category(props){
 }
 
 export function CheckButton(props){
-  const chooseColor = props.colorChart.find((color)=> color.name === props.bgColor);
-  //console.log(props.listStatus[0].isDone);
+  const selectColor = useSelector((state) => state.color.value);
+  const colorChart = useSelector((state) => state.chart);
+  const chooseColor = colorChart.find((color)=> color.name === selectColor);
 
 
   return (
@@ -53,16 +60,21 @@ export function CheckButton(props){
 }
 
 export function MoreButton(props) {
-  const chooseColor = props.colorChart.find((color)=> color.name === props.bgColor);
-  const [ isMore, setIsMore ] = useState(false);
+  const selectColor = useSelector((state) => state.color.value);
+  const colorChart = useSelector((state) => state.chart);
+  const chooseColor = colorChart.find((color)=> color.name === selectColor);
+
+  const [isMore, setIsMore] = useState(false);
 
   return (
     <div className="rem:w-[36px] h-[100%] inline-block align-top relative text-[0px] ">
       <button type="button" className={`
       rem:w-[19px] h-[100%] absolute right-[0px]
-      ${ isMore ? "opacity-0" : "opacity-100"}
+      ${isMore ? "opacity-0" : "opacity-100"}
       `}
-        onClick={()=>{setIsMore((prev)=> !prev)}}
+              onClick={() => {
+                setIsMore((prev) => !prev)
+              }}
       >더보기
         <span className={`
           rem:w-[5px] rem:h-[5px] block absolute left-[50%] top-[50%] rem:mt-[-2.5px] rem:ml-[-2.5px] rounded-100% ${chooseColor.chart.bg.default200}
@@ -72,34 +84,42 @@ export function MoreButton(props) {
       </button>
       <div className={`
         rem:h-[16px] absolute top-[50%] right-[0] rem:mt-[-9px] transition-all origin-right
-        ${ isMore ? "scale-100" : "scale-0 opacity-0"}
+        ${isMore ? "scale-100" : "scale-0 opacity-0"}
         `}
-         onClick={()=>{setIsMore(false)}}
+           onClick={() => {
+             setIsMore(false)
+           }}
       >
-        <button type="button" className={`rem:w-[16px] h-[100%] relative rounded-100% ${ props.listStatus[0].isImportant ? chooseColor.chart.bg.default200 : "bg-white"}`} onClick={()=>{
-          let copy = [...props.listStatus];
-          copy[0].isImportant = !props.listStatus[0].isImportant;
+        <button type="button"
+                className={`rem:w-[16px] h-[100%] relative rounded-100% ${props.listStatus[0].isImportant ? chooseColor.chart.bg.default200 : "bg-white"}`}
+                onClick={() => {
+                  let copy = [...props.listStatus];
+                  copy[0].isImportant = !props.listStatus[0].isImportant;
           props.setListStatus(copy)
         }}>
           중요
-          <FaHeart className={`rem:w-[12px] rem:h-[12px] absolute top-[50%] left-[50%] rem:mt-[-5.5px] rem:ml-[-6px] ${ props.listStatus[0].isImportant ? chooseColor.chart.text.default300 : chooseColor.chart.text.default100} `}/>
+          <FaHeart
+            className={`rem:w-[12px] rem:h-[12px] absolute top-[50%] left-[50%] rem:mt-[-5.5px] rem:ml-[-6px] ${props.listStatus[0].isImportant ? chooseColor.chart.text.default300 : chooseColor.chart.text.default100} `}/>
         </button>
         <button type="button" className={`
           rem:w-[16px] h-[100%] relative rem:ml-[4px] rounded-100% ${chooseColor.chart.bg.default200}
           before:content-[''] rem:before:w-[10px] rem:before:h-[2px] before:absolute before:top-[50%] before:left-[50%] rem:before:mt-[-1px] rem:before:ml-[-5px] before:bg-white
-        `}>제거</button>
+        `}>제거
+        </button>
       </div>
     </div>
   )
 }
 
-export function CheckList(props){
-  const [ listStatus, setListStatus ] = useState([
-    { isDone: false, isImportant: false, }
+export function CheckList(props) {
+  const [listStatus, setListStatus] = useState([
+    {isDone: false, isImportant: false,}
   ]);
-  const chooseColor = props.colorChart.find((color)=> color.name === props.bgColor);
+  const selectColor = useSelector((state) => state.color.value);
+  const colorChart = useSelector((state) => state.chart);
+  const chooseColor = colorChart.find((color)=> color.name === selectColor);
   const isActiveCss = (isDone, isImportant) => {
-    if(isDone && isImportant){
+    if (isDone && isImportant) {
       return `${chooseColor.chart.text.default400} line-through font-bold`
     } else if(isImportant){
       return `${chooseColor.chart.text.default500} font-bold`
@@ -112,14 +132,15 @@ export function CheckList(props){
 
   return (
     <div className="rem:h-[40px] rem:pt-[18px] text-left">
-      <CheckButton listNum={props.listNum} bgColor={props.bgColor} colorChart={props.colorChart} listStatus={listStatus} setListStatus={setListStatus}></CheckButton>
+      <CheckButton listNum={props.listNum} listStatus={listStatus}
+                   setListStatus={setListStatus}></CheckButton>
       <input type="text" disabled={listStatus[0].isDone} className={`
         rem:w-[232px] rem:h-[22px] align-top rem:pl-[16px] rem:pr-[10px] rem:text-[16px] box-content bg-transparent
         focus:outline-0 rem:focus:border-b-[1px] focus:border-dashed ${chooseColor.chart.border.focus300}
         ${isActiveCss(listStatus[0].isDone, listStatus[0].isImportant)}
       `}
       />
-      <MoreButton bgColor={props.bgColor} colorChart={props.colorChart} listStatus={listStatus} setListStatus={setListStatus} ></MoreButton>
+      <MoreButton listStatus={listStatus} setListStatus={setListStatus}></MoreButton>
     </div>
   )
 }

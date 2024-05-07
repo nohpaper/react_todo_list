@@ -28,8 +28,10 @@ module.exports = {
     fontFamily: {
 
     },
-    extend: {
-      colors: {
+    colors: {
+      "transparent": "transparent",
+      "white" : "#ffffff",
+      "black" : "#000000",
       //레드
       "red" : {
         "100": "#FFD2D2",
@@ -93,10 +95,14 @@ module.exports = {
         "500": "#553052",
       },
     },
+    extend: {
       borderRadius: {
         20:"1rem",
         30:"1.5rem",
         "100%":"100%",
+      },
+      transitionTimingFunction: {
+        'custom': 'cubic-bezier(0.49, 0.78, 0.74, 1.08)',
       }
     },
   },
