@@ -1,16 +1,18 @@
 import {useEffect, useRef, useState} from "react";
+import {Category, Bord, CheckList} from "../source/elements/memo";
 import { useSelector, useDispatch } from 'react-redux';
+import {colorChart} from "../source/store/common";
+import {data} from "../source/store/data";
+
 
 export default function TodoList(props){
   const [isInputButton, setIsInputButton] = useState(false);
   const [colorPicker, setColorPicker] = useState("none");
 
   const inputField = useRef();
-
-  const colorChart = useSelector((state) => state.chart);
   const pickerColorFind = colorChart.find((color)=> color.name === colorPicker);
 
-  console.log(colorPicker);
+  console.log(data.list.length);
   useEffect(() => {
     /*if(colorPicker !== "none"){
       return inputField.current.classList.add("input_field_on");
@@ -26,12 +28,21 @@ export default function TodoList(props){
   }, [isInputButton, colorPicker]);
   return (
     <div className="w-[100%] h-[100vh] bg-[#FAFBFF]">
-      <div className="rem:pt-[36px] rem:pb-[20px]">
-        <div></div>
-        <button className="rem:px-[31px] rem:py-[10px] rounded-30 rem:text-[20px] bg-white">4월 16일</button>
+      <div className="rem:w-[1730px] m-auto rem:pt-[36px] rem:pb-[20px] relative">
+        <button className="rem:px-[31px] rem:py-[10px] absolute rem:top-[36px] left-0 rounded-30 rem:text-[20px] bg-white">4월 15일</button>
+        <button className="rem:px-[31px] rem:py-[10px] block m-auto rounded-30 rem:text-[20px] bg-white">4월 16일</button>
       </div>
       {/* main */}
       <div className="rem:w-[1730px] rem:h-[770px] relative m-auto rounded-30 overflow-hidden bg-white">
+        <Bord isList={true}>
+          <Category value="^^"/>
+          <div className="rem:pt-[10px]">
+            <CheckList listNum={"1"}></CheckList>
+            <CheckList listNum={"2"}></CheckList>
+            <CheckList listNum={"3"}></CheckList>
+            <CheckList listNum={"4"}></CheckList>
+          </div>
+        </Bord>
         <div className={`rem:w-[407px] h-[100%] absolute top-0 right-0 rounded-30 ${isInputButton ? "translate-x-0 shadow-[-4px_0_10px_rgba(0,0,0,.1)]" : "translate-x-[18.125rem]" } transition-all duration-700`}>
           <form action="">
             <ul className="rem:pt-[36px] rem:pb-[30px] rem:pl-[36px] text-left">
@@ -45,11 +56,14 @@ export default function TodoList(props){
                 }}></button>
               </li>
               <li className="rem:h-[45px] inline-block align-top rem:pl-[36px]">
-
                 {colorChart.map((element, idx)=><SelectColorItem element={element} idx={idx} colorPicker={colorPicker} setColorPicker={setColorPicker} inputField={inputField}/>)}
-
               </li>
             </ul>
+            {data.list.length === 0 ? null :
+              <div className="rem:w-[333px] m-auto rem:mb-[20px]">
+                {data.list.map((element) => <MadeCategory element={element}/>)}
+              </div>
+            }
             {/*
               --창 열릴 시--
               1. isInputButton이 true,
@@ -124,4 +138,20 @@ export function SelectColorItem(props) {
     <label htmlFor={props.element.name}
            className={`color_select_label ${ props.colorPicker === props.element.name ? props.element.chart.bg.before200 : props.element.chart.bg.before100} ${props.element.chart.bg.after100}`}>{props.element.name}</label>
   </div>
+}
+
+export function MadeCategory(props) {
+  const [ categoryState, setCategoryState ] = useState("default"); //defalut - active - remove
+  const categoryColor = colorChart.find((color)=> color.name === props.element.color);
+
+  return <button className={`
+    inline-block relative rem:ml-[6px] rem:mb-[8px] rem:pl-[38px] rem:pr-[20px] rem:py-[7px] rounded-30 text-[0px] shadow-[0_0_10px_0_rgba(0,0,0,0.15)] ${categoryColor.chart.bg.default100}
+  `}>
+    <span className={`
+      rem:w-[16px] rem:h-[16px] absolute top-[50%] rem:left-[13px] rem:mt-[-8px] rounded-100% ${categoryColor.chart.bg.default200}
+      before:content-[''] rem:before:w-[6px] rem:before:h-[6px] before:absolute before:top-[50%] before:left-[50%] rem:before:mt-[-3px] rem:before:ml-[-3px] before:rounded-100% before:bg-white
+      after:content-[''] rem:after:w-[10px] rem:after:h-[2px] after:absolute after:top-[50%] after:left-[50%] rem:after:mt-[-1px] rem:after:ml-[-5px] after:bg-white
+    `}/>
+    <span className={`text-[16px] leading-[19px] ${categoryColor.chart.text.default500}`}>{props.element.category}</span>
+  </button>
 }

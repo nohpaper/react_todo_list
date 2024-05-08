@@ -1,6 +1,6 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
-const selectColor = createSlice({
+const selectedColor = createSlice({
   name: "color",
   initialState: { value : "yellow" },
   reducers: {
@@ -184,12 +184,12 @@ const colorChart = createSlice({
   ],
 })
 
-export const { updateColor } = selectColor.actions;
+export const { updateColor } = selectedColor.actions;
 
 export default configureStore({
   reducer: {
     chart: colorChart.reducer,
-    color: selectColor.reducer,
+    color: selectedColor.reducer,
   },
 });
 

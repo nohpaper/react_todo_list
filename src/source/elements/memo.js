@@ -3,11 +3,11 @@ import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 
 import { useSelector } from 'react-redux';
+import { colorChart } from "../store/common";
 
 export function Bord(props) {
-  const selectColor = useSelector((state) => state.color.value);
-  const colorChart = useSelector((state) => state.chart);
-  const chooseColor = colorChart.find((color)=> color.name === selectColor);
+  const selectedColor = useSelector((state) => state.color.value);
+  const chooseColor = colorChart.find((color)=> color.name === selectedColor);
 
   return (
     <div className={`${props.isList ? "rem:w-[350px]" : "w-[100%]"} rem:min-h-[250px] rem:pt-[13px] rem:pr-[25px] rem:pb-[25px] rem:pl-[15px] box-border rounded-20 ${chooseColor.chart.bg.default100}`}>{ props.children }</div>
@@ -15,9 +15,8 @@ export function Bord(props) {
 }
 
 export function Category(props){
-  const selectColor = useSelector((state) => state.color.value);
-  const colorChart = useSelector((state) => state.chart);
-  const chooseColor = colorChart.find((color)=> color.name === selectColor);
+  const selectedColor = useSelector((state) => state.color.value);
+  const chooseColor = colorChart.find((color)=> color.name === selectedColor);
 
   return (
     /*<input type="text" name="category" className={classNames("rounded-20 py-[6px] pr-[16px] pl-[35px]", {
@@ -33,9 +32,8 @@ export function Category(props){
 }
 
 export function CheckButton(props){
-  const selectColor = useSelector((state) => state.color.value);
-  const colorChart = useSelector((state) => state.chart);
-  const chooseColor = colorChart.find((color)=> color.name === selectColor);
+  const selectedColor = useSelector((state) => state.color.value);
+  const chooseColor = colorChart.find((color)=> color.name === selectedColor);
 
 
   return (
@@ -60,9 +58,8 @@ export function CheckButton(props){
 }
 
 export function MoreButton(props) {
-  const selectColor = useSelector((state) => state.color.value);
-  const colorChart = useSelector((state) => state.chart);
-  const chooseColor = colorChart.find((color)=> color.name === selectColor);
+  const selectedColor = useSelector((state) => state.color.value);
+  const chooseColor = colorChart.find((color)=> color.name === selectedColor);
 
   const [isMore, setIsMore] = useState(false);
 
@@ -115,9 +112,8 @@ export function CheckList(props) {
   const [listStatus, setListStatus] = useState([
     {isDone: false, isImportant: false,}
   ]);
-  const selectColor = useSelector((state) => state.color.value);
-  const colorChart = useSelector((state) => state.chart);
-  const chooseColor = colorChart.find((color)=> color.name === selectColor);
+  const selectedColor = useSelector((state) => state.color.value);
+  const chooseColor = colorChart.find((color)=> color.name === selectedColor);
   const isActiveCss = (isDone, isImportant) => {
     if (isDone && isImportant) {
       return `${chooseColor.chart.text.default400} line-through font-bold`
