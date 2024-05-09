@@ -7,6 +7,7 @@ export const colorChart =     [
                 "default100": "bg-red-100", "before100": "before:bg-red-100", "after100": "after:bg-red-100",
                 "default200": "bg-red-200", "before200": "before:bg-red-200", "after200": "after:bg-red-200",
                 "default300": "bg-red-300",
+                "before400": "before:bg-red-400", "after400": "after:bg-red-400",
             },
             text: {
                 "default100": "text-red-100",
@@ -31,6 +32,7 @@ export const colorChart =     [
                 "default100": "bg-yellow-100", "before100": "before:bg-yellow-100", "after100": "after:bg-yellow-100",
                 "default200": "bg-yellow-200", "before200": "before:bg-yellow-200", "after200": "after:bg-yellow-200",
                 "default300": "bg-yellow-300",
+                "before400": "before:bg-yellow-400", "after400": "after:bg-yellow-400",
             },
             text: {
                 "default100": "text-yellow-100",
@@ -55,6 +57,7 @@ export const colorChart =     [
                 "default100": "bg-lightGreen-100", "before100": "before:bg-lightGreen-100", "after100": "after:bg-lightGreen-100",
                 "default200": "bg-lightGreen-200", "before200": "before:bg-lightGreen-200", "after200": "after:bg-lightGreen-200",
                 "default300": "bg-lightGreen-300",
+                "before400": "before:bg-lightGreen-400", "after400": "after:bg-lightGreen-400",
             },
             text: {
                 "default100": "text-lightGreen-100",
@@ -79,6 +82,7 @@ export const colorChart =     [
                 "default100": "bg-blue-100", "before100": "before:bg-blue-100", "after100": "after:bg-blue-100",
                 "default200": "bg-blue-200", "before200": "before:bg-blue-200", "after200": "after:bg-blue-200",
                 "default300": "bg-blue-300",
+                "before400": "before:bg-blue-400", "after400": "after:bg-blue-400",
             },
             text: {
                 "default100": "text-blue-100",
@@ -103,6 +107,7 @@ export const colorChart =     [
                 "default100": "bg-purple-100", "before100": "before:bg-purple-100", "after100": "after:bg-purple-100",
                 "default200": "bg-purple-200", "before200": "before:bg-purple-200", "after200": "after:bg-purple-200",
                 "default300": "bg-purple-300",
+                "before400": "before:bg-purple-400", "after400": "after:bg-purple-400",
             },
             text: {
                 "default100": "text-purple-100",
@@ -127,6 +132,7 @@ export const colorChart =     [
                 "default100": "bg-gray-100", "before100": "before:bg-gray-100", "after100": "after:bg-gray-100",
                 "default200": "bg-gray-200", "before200": "before:bg-gray-200", "after200": "after:bg-gray-200",
                 "default300": "bg-gray-300",
+                "before400": "before:bg-gray-400", "after400": "after:bg-gray-400",
             },
             text: {
                 "default100": "text-gray-100",
@@ -151,6 +157,7 @@ export const colorChart =     [
                 "default100": "bg-pink-100", "before100": "before:bg-pink-100", "after100": "after:bg-pink-100",
                 "default200": "bg-pink-200", "before200": "before:bg-pink-200", "after200": "after:bg-pink-200",
                 "default300": "bg-pink-300",
+                "before400": "before:bg-pink-400", "after400": "after:bg-pink-400",
             },
             text: {
                 "default100": "text-pink-100",

@@ -43,6 +43,6 @@ code {
   after:content-[''] rem:after:w-[10px] rem:after:h-[10px] after:absolute after:top-[50%] after:left-[50%] rem:after:mt-[-5px] rem:after:ml-[-5px] after:rounded-100%
 }
 
-.input_field_on {
+.field_on {
   @apply translate-x-0 opacity-100
 }

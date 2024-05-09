@@ -2,30 +2,72 @@ import {useEffect, useRef, useState} from "react";
 import {Category, Bord, CheckList} from "../source/elements/memo";
 import { useSelector, useDispatch } from 'react-redux';
 import {colorChart} from "../source/store/common";
-import {data} from "../source/store/data";
 
 
 export default function TodoList(props){
   const [isInputButton, setIsInputButton] = useState(false);
   const [colorPicker, setColorPicker] = useState("none");
+  const [showCount, setShowCount] = useState(0);
+  const [activeCount, setActiveCount] = useState(0);
 
   const inputField = useRef();
   const pickerColorFind = colorChart.find((color)=> color.name === colorPicker);
 
-  console.log(data.list.length);
-  useEffect(() => {
-    /*if(colorPicker !== "none"){
-      return inputField.current.classList.add("input_field_on");
-    }else if(!isInputButton){
-      return inputField.current.classList.remove("input_field_on");
-    }*/
+  const [data, setData] = useState({
+    id : "20240508", //입력하면 넘어오는 정보
+    list : [
+      {
+        color : "blue", //입력하면 넘어오는 정보
+        category : "할일", //입력하면 넘어오는 정보
+        show : true, //입력하면 넘어오는 정보
+        active : false,
+        todo : [
+          {
+            number : 0,
+            content : "3시간 공부하기", //입력하면 넘어오는 정보
+            show : true,
+            important : false,
+          },
+        ]
+      },
+      {
+        color : "red",
+        category : "예약",
+        show : true,
+        active : false,
+        todo : [
+          {
+            number : 0,
+            content : "KTX 예약",
+            show : true,
+            important : false,
+          },
+          {
+            number : 1,
+            content : "숙소 예약하기",
+            show : true,
+            important : false,
+          },
+        ]
+      }
+    ]
+  })
 
+  useEffect(() => {
+    //
     if(!isInputButton){
-      return inputField.current.classList.remove("input_field_on");
+       inputField.current.classList.remove("field_on");
     }else if(colorPicker !== "none"){
-      return inputField.current.classList.add("input_field_on");
+       inputField.current.classList.add("field_on");
     }
   }, [isInputButton, colorPicker]);
+
+  useEffect(()=>{
+    setShowCount(data.list.filter(item => item.show).length)
+    setActiveCount(data.list.filter(item => item.active).length)
+    //console.log("Number of items where 'show' is true:", showCount);
+
+  }, [data])
   return (
     <div className="w-[100%] h-[100vh] bg-[#FAFBFF]">
       <div className="rem:w-[1730px] m-auto rem:pt-[36px] rem:pb-[20px] relative">
@@ -59,9 +101,9 @@ export default function TodoList(props){
                 {colorChart.map((element, idx)=><SelectColorItem element={element} idx={idx} colorPicker={colorPicker} setColorPicker={setColorPicker} inputField={inputField}/>)}
               </li>
             </ul>
-            {data.list.length === 0 ? null :
-              <div className="rem:w-[333px] m-auto rem:mb-[20px]">
-                {data.list.map((element) => <MadeCategory element={element}/>)}
+            {showCount === 0 ? null :
+              <div className={`rem:w-[333px] m-auto rem:mb-[20px] duration-500 ease-custom ${isInputButton ? "field_on" : "translate-x-[23.0625rem] opacity-0 "}`}>
+                {data.list.map((element, idx) => <MadeCategory element={element} idx={idx} data={data} setData={setData} colorPicker={colorPicker} setColorPicker={setColorPicker} activeCount={activeCount}/>)}
               </div>
             }
             {/*
@@ -141,17 +183,44 @@ export function SelectColorItem(props) {
 }
 
 export function MadeCategory(props) {
-  const [ categoryState, setCategoryState ] = useState("default"); //defalut - active - remove
+  const [ isActive, setIsActive ] = useState(props.data.list[props.idx].active);
+  const [ isShow, setIsShow ] = useState(props.data.list[props.idx].show);
   const categoryColor = colorChart.find((color)=> color.name === props.element.color);
 
-  return <button className={`
-    inline-block relative rem:ml-[6px] rem:mb-[8px] rem:pl-[38px] rem:pr-[20px] rem:py-[7px] rounded-30 text-[0px] shadow-[0_0_10px_0_rgba(0,0,0,0.15)] ${categoryColor.chart.bg.default100}
+  useEffect(()=>{
+    props.setData((prev)=>{
+      const copy=[...prev.list];
+      copy[props.idx].active = isActive;
+      copy[props.idx].show = isShow;
+      return { ...prev, list:copy }
+    })
+  }, [isActive, isShow])
+
+
+  return <div className={`
+    inline-block relative rem:ml-[6px] rem:mb-[8px] rounded-30 text-[0px] shadow-[0_0_10px_0_rgba(0,0,0,0.15)] ${categoryColor.chart.bg.default100}
+    ${ isShow ? "inline-block" : "hidden"}
   `}>
-    <span className={`
-      rem:w-[16px] rem:h-[16px] absolute top-[50%] rem:left-[13px] rem:mt-[-8px] rounded-100% ${categoryColor.chart.bg.default200}
-      before:content-[''] rem:before:w-[6px] rem:before:h-[6px] before:absolute before:top-[50%] before:left-[50%] rem:before:mt-[-3px] rem:before:ml-[-3px] before:rounded-100% before:bg-white
-      after:content-[''] rem:after:w-[10px] rem:after:h-[2px] after:absolute after:top-[50%] after:left-[50%] rem:after:mt-[-1px] rem:after:ml-[-5px] after:bg-white
-    `}/>
-    <span className={`text-[16px] leading-[19px] ${categoryColor.chart.text.default500}`}>{props.element.category}</span>
-  </button>
+    <button type="button" className="rem:pl-[38px] rem:pr-[9px] rem:py-[7px]"
+            onClick={()=>{
+              if(props.colorPicker !== "none"){props.setColorPicker("none")}
+              setIsActive((prev)=>!prev);
+
+            }}>
+      <span className={`
+        rem:w-[16px] rem:h-[16px] absolute top-[50%] rem:left-[13px] rem:mt-[-8px] rounded-100% ${isActive ? categoryColor.chart.bg.default200 : "bg-white"}
+        before:content-[''] rem:before:w-[6px] rem:before:h-[6px] before:absolute before:top-[50%] before:left-[50%] rem:before:mt-[-3px] rem:before:ml-[-3px] before:rounded-100% before:bg-white
+      `}/>
+      <span className={`text-[16px] leading-[19px] ${categoryColor.chart.text.default500}`}>{props.element.category}</span>
+    </button>
+    <button type="button" className={`
+      rem:w-[10px] rem:h-[10px] inline-block align-top relative rem:pr-[10px] rem:py-[13px] box-content
+    `} onClick={()=>{setIsShow((prev)=>!prev)}}>
+      <span className={`
+        w-[100%] h-[100%] block relative rotate-[-45deg]
+        before:content-[''] rem:before:w-[2px] rem:before:h-[10px] before:absolute before:top-[50%] before:left-[50%] rem:before:mt-[-5px] rem:before:ml-[-1px] ${categoryColor.chart.bg.before400}
+        after:content-[''] rem:after:w-[10px] rem:after:h-[2px] after:absolute after:top-[50%] after:left-[50%] rem:after:mt-[-1px] rem:after:ml-[-5px] ${categoryColor.chart.bg.after400}
+      `}></span>닫기
+    </button>
+  </div>
 }
