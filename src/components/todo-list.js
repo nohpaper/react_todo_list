@@ -7,6 +7,10 @@ import {colorChart} from "../source/store/common";
 export default function TodoList(props){
   const [isInputButton, setIsInputButton] = useState(false);
   const [colorPicker, setColorPicker] = useState("none");
+  const [categoryName, setCategoryName] = useState("");
+  const [fieldContent, setFieldContent] = useState("");
+
+  //category
   const [showCount, setShowCount] = useState(0);
   const [activeCount, setActiveCount] = useState(0);
 
@@ -19,55 +23,67 @@ export default function TodoList(props){
       {
         color : "blue", //입력하면 넘어오는 정보
         category : "할일", //입력하면 넘어오는 정보
-        show : true, //입력하면 넘어오는 정보
-        active : false,
+        isShow : true,
+        isActive : false,
         todo : [
           {
             number : 0,
             content : "3시간 공부하기", //입력하면 넘어오는 정보
-            show : true,
-            important : false,
+            isShow : true,
+            isDone : false,
+            isImportant : false,
           },
         ]
       },
       {
         color : "red",
         category : "예약",
-        show : true,
-        active : false,
+        isShow : true,
+        isActive : false,
         todo : [
           {
             number : 0,
             content : "KTX 예약",
-            show : true,
-            important : false,
+            isShow : true,
+            isDone : false,
+            isImportant : false,
           },
           {
             number : 1,
             content : "숙소 예약하기",
-            show : true,
-            important : false,
+            isShow : true,
+            isDone : false,
+            isImportant : false,
           },
         ]
       }
     ]
   })
-
+  console.log(data);
   useEffect(() => {
-    //
     if(!isInputButton){
-       inputField.current.classList.remove("field_on");
-    }else if(colorPicker !== "none"){
-       inputField.current.classList.add("field_on");
+      //false
+      inputField.current.classList.remove("field_on");
+    }else{
+      //true
+      if(colorPicker !== "none" || activeCount >= 1){
+        //active
+        inputField.current.classList.add("field_on");
+      }else {
+        //none active
+        inputField.current.classList.remove("field_on");
+      }
+
     }
-  }, [isInputButton, colorPicker]);
+  }, [isInputButton, colorPicker, activeCount]);
 
   useEffect(()=>{
-    setShowCount(data.list.filter(item => item.show).length)
-    setActiveCount(data.list.filter(item => item.active).length)
+    setShowCount(data.list.filter(item => item.isShow).length)
+    setActiveCount(data.list.filter(item => item.isActive).length)
     //console.log("Number of items where 'show' is true:", showCount);
 
   }, [data])
+
   return (
     <div className="w-[100%] h-[100vh] bg-[#FAFBFF]">
       <div className="rem:w-[1730px] m-auto rem:pt-[36px] rem:pb-[20px] relative">
@@ -76,15 +92,24 @@ export default function TodoList(props){
       </div>
       {/* main */}
       <div className="rem:w-[1730px] rem:h-[770px] relative m-auto rounded-30 overflow-hidden bg-white">
-        <Bord isList={true}>
-          <Category value="^^"/>
-          <div className="rem:pt-[10px]">
-            <CheckList listNum={"1"}></CheckList>
-            <CheckList listNum={"2"}></CheckList>
-            <CheckList listNum={"3"}></CheckList>
-            <CheckList listNum={"4"}></CheckList>
-          </div>
-        </Bord>
+        <div className="w-[100%] h-[100%] rem:pl-[66px] rem:pr-[117px] rem:py-[46px]">
+          <form action="">
+            {data.list.map(function(element, idx){
+              const dataColor = element.color;
+              const listIdx = idx;
+
+              return <Bord isList={true} color={dataColor}>
+                <Category category={element.category} color={dataColor}/>
+                <div className="rem:pt-[10px]">
+                  {element.todo.map(function(element, idx){
+                    return <CheckList todoIdx={idx} listIdx={listIdx} color={dataColor} content={element.content} isShow={element.isShow} isDone={element.isDone} isImportant={element.isImportant}/>
+                  })}
+                </div>
+              </Bord>
+            })}
+
+          </form>
+        </div>
         <div className={`rem:w-[407px] h-[100%] absolute top-0 right-0 rounded-30 ${isInputButton ? "translate-x-0 shadow-[-4px_0_10px_rgba(0,0,0,.1)]" : "translate-x-[18.125rem]" } transition-all duration-700`}>
           <form action="">
             <ul className="rem:pt-[36px] rem:pb-[30px] rem:pl-[36px] text-left">
@@ -98,7 +123,7 @@ export default function TodoList(props){
                 }}></button>
               </li>
               <li className="rem:h-[45px] inline-block align-top rem:pl-[36px]">
-                {colorChart.map((element, idx)=><SelectColorItem element={element} idx={idx} colorPicker={colorPicker} setColorPicker={setColorPicker} inputField={inputField}/>)}
+                {colorChart.map((element, idx)=><SelectColorItem element={element} idx={idx} data={data} setData={setData} colorPicker={colorPicker} setColorPicker={setColorPicker} inputField={inputField}/>)}
               </li>
             </ul>
             {showCount === 0 ? null :
@@ -146,12 +171,23 @@ export default function TodoList(props){
               <div className={`rem:pt-[15px] rem:px-[15px] rem:pb-[12px] rounded-20 box-border ${colorPicker === "none" ? "bg-gray-100" : pickerColorFind.chart.bg.default100} `}>
                 <div
                   className={`relative text-left before:content-[''] rem:before:w-[16px] rem:before:h-[16px] before:absolute before:top-[50%] rem:before:left-[13px] rem:before:mt-[-8px] before:rounded-100% ${colorPicker === "none" ? "before:bg-gray-100" : pickerColorFind.chart.bg.before100}`}>
-                  <input type="text" name="category" placeholder="카테고리 이름 입력..."
-                         className="rem:w-[196px] rem:max-w-[305px] rem:py-[8px] rem:pr-[18px] rem:pl-[38px] rounded-30 overflow-hidden rem:text-[16px] rem:leading-[19px] placeholder-[#939393]"/>
+                  <input type="text" name="category" placeholder="카테고리 이름 입력..." //value={}
+                         className="rem:w-[196px] rem:max-w-[305px] rem:py-[8px] rem:pr-[18px] rem:pl-[38px] rounded-30 overflow-hidden rem:text-[16px] rem:leading-[19px] placeholder-[#939393]"
+                         onChange={(e)=>{
+                           if(colorPicker !== "none" && activeCount === 0){
+                             setCategoryName(e.target.value);
+                           }
+                         }}
+                  />
                 </div>
                 <div className="rem:pt-[24px]">
                   <input type="text" name="contant" placeholder="내용 입력..."
-                         className={`rem:w-[305px] rem:px-[16px] rem:py-[6px] rounded-30 rem:text-[16px] rem:leading-[19px] rem:border-[1px] border-solid bg-transparent ${colorPicker === "none" ? "border-gray-300" : pickerColorFind.chart.border.default300} ${colorPicker === "none" ? "placeholder-gray-300" : pickerColorFind.chart.placeholder.default300}`}/>
+                         className={`rem:w-[305px] rem:px-[16px] rem:py-[6px] rounded-30 rem:text-[16px] rem:leading-[19px] rem:border-[1px] border-solid bg-transparent ${colorPicker === "none" ? "border-gray-300" : pickerColorFind.chart.border.default300} ${colorPicker === "none" ? "placeholder-gray-300" : pickerColorFind.chart.placeholder.default300}`}
+                         onChange={(e)=>{
+                           setFieldContent(e.target.value);
+                           console.log(fieldContent);
+                         }}
+                  />
                 </div>
                 <div className="w-[100%] inline-block rem:pt-[12px] text-right">
                   <button type="reset"
@@ -161,6 +197,22 @@ export default function TodoList(props){
                           className={`rem:ml-[5px] rem:px-[26px] rem:py-[6px] rounded-30 rem:text-[16px] rem:leading-[22px] text-white ${colorPicker === "none" ? "bg-gray-300" : pickerColorFind.chart.bg.default300}`}
                           onClick={(e) => {
                             e.preventDefault();
+                            const addContent = {
+                              color : colorPicker,
+                              category: categoryName,
+                              isShow : true,
+                              isActive : false,
+                              todo : [
+                                {
+                                  number : 0,
+                                  content : fieldContent, //입력하면 넘어오는 정보
+                                  isShow : true,
+                                  isImportant : false,
+                                },
+                              ]
+                            }
+
+                            setData((prev)=>({...prev, list:[...prev.list, addContent]}))
                           }}>추가
                   </button>
                 </div>
@@ -174,27 +226,47 @@ export default function TodoList(props){
 }
 
 export function SelectColorItem(props) {
-
   return <div className="color_select_wrap" key={props.idx}>
-    <input type="radio" name="color_select" id={props.element.name} className="color_select_input" value={props.element.name} checked={props.colorPicker === props.element.name} onChange={(e)=>{props.setColorPicker(e.target.value); }} onClick={(e)=>{if(e.target.value === props.colorPicker){props.setColorPicker("none"); props.inputField.current.classList.remove("input_field_on");}}} key={props.idx}/>
+    <input type="radio" name="color_select" id={props.element.name} className="color_select_input" value={props.element.name} checked={props.colorPicker === props.element.name} onChange={(e)=>{props.setColorPicker(e.target.value); }}
+           onClick={(e)=>{
+             //reclick시 input radio value false
+             if(e.target.value === props.colorPicker){
+               props.setColorPicker("none");
+               props.inputField.current.classList.remove("input_field_on");
+             }
+
+             //click시 props.data.list.active value all false
+             const update = props.data.list.map(function(element){
+               return {
+                 ...element,
+                 isActive : false
+               }
+             })
+             props.setData({...props.data, list:update});
+           }} key={props.idx}/>
     <label htmlFor={props.element.name}
            className={`color_select_label ${ props.colorPicker === props.element.name ? props.element.chart.bg.before200 : props.element.chart.bg.before100} ${props.element.chart.bg.after100}`}>{props.element.name}</label>
   </div>
 }
 
 export function MadeCategory(props) {
-  const [ isActive, setIsActive ] = useState(props.data.list[props.idx].active);
-  const [ isShow, setIsShow ] = useState(props.data.list[props.idx].show);
+  const [ isActive, setIsActive ] = useState(false); //click active boolean
+  const [ isShow, setIsShow ] = useState(props.data.list[props.idx].isShow); //category show boolean
   const categoryColor = colorChart.find((color)=> color.name === props.element.color);
+
+  useEffect(()=>{
+    setIsActive(props.data.list[props.idx].isActive);
+  }, [props.data])
 
   useEffect(()=>{
     props.setData((prev)=>{
       const copy=[...prev.list];
-      copy[props.idx].active = isActive;
-      copy[props.idx].show = isShow;
+      copy[props.idx].isActive = isActive;
+      copy[props.idx].isShow = isShow;
       return { ...prev, list:copy }
     })
   }, [isActive, isShow])
+
 
 
   return <div className={`
@@ -203,7 +275,34 @@ export function MadeCategory(props) {
   `}>
     <button type="button" className="rem:pl-[38px] rem:pr-[9px] rem:py-[7px]"
             onClick={()=>{
+              //category click시 color picker value false
               if(props.colorPicker !== "none"){props.setColorPicker("none")}
+
+
+
+              /*if(props.activeCount > 0){
+
+
+                //click시 props.data.list.isActive value all false
+                const update = props.data.list.map(function(element){
+                  console.log(element);
+                  return {
+                    ...element,
+                    isActive : false
+                  }
+                })
+                props.setData({...props.data, list:update});
+
+                const copy = props.data.list.slice(props.idx);
+                console.log(copy);
+
+
+                console.log(update);
+                console.log("1개 이상");
+                //setIsActive(true);
+              }else {
+
+              }*/
               setIsActive((prev)=>!prev);
 
             }}>
