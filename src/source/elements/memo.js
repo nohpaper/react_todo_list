@@ -4,6 +4,7 @@ import { FaHeart } from "react-icons/fa";
 
 import { useSelector } from 'react-redux';
 import { colorChart } from "../store/common";
+import {isAction} from "@reduxjs/toolkit";
 
 export function Bord(props) {
   const selectedColor = useSelector((state) => state.color.value);
@@ -29,7 +30,11 @@ export function Category(props){
       w-[100%] relative
       before:content-[""] rem:before:w-[16px] rem:before:h-[16px] before:absolute rem:before:left-[13px] before:top-[50%] rem:before:mt-[-8px] before:rounded-100% ${dataColor.chart.bg.before100}
     `}>
-      <input type="text" name="category" value={props.category} className={`w-[100%] rem:py-[6px] rem:pr-[16px] rem:pl-[35px] rounded-20 ${dataColor.chart.text.default500}`}/>
+      <input type="text" name="category" value={props.category} className={`w-[100%] rem:py-[6px] rem:pr-[16px] rem:pl-[35px] rounded-20 ${dataColor.chart.text.default500}`}
+             onChange={(e)=>{
+               console.log(e.target.value);
+             }}
+      />
     </div>
   )
 }
@@ -44,17 +49,34 @@ export function CheckButton(props){
   return (
     <div className="rem:w-[16px] rem:h-[16px] inline-block relative align-top">
       <input type="checkbox" id={`listCheck${props.listIdx}_${props.todoIdx}`} className="absolute top-[0] left-[0] opacity-[0] z-[-1]"
-             onChange={() => {
-               let copy = [...props.listStatus];
+             onClick={() => {
+               /*let copy = [...props.listStatus];
                copy[0].isDone = !props.listStatus[0].isDone;
-               props.setListStatus(copy)
+               props.setListStatus(copy)*/
+
+               //let copy = [...props.element];
+               /*copy[0].isDone = !props.element.isDone;
+               props.setListStatus(copy)*/
+               const clickTodo = props.data.list.find((item) => item.todo === props.element);
+               const copy = [...props.data.list];
+
+
+               copy[props.listIdx].todo[props.todoIdx].isDone = !props.element.isDone;
+               props.setData((prev)=>({...prev, list:[...prev.list, {todo:[{...prev.list.todo, isDone:copy}] }]   }))
+
+               console.log(props.element.isDone);
+
+
+
+               /*console.log(props.todoIdx);
+               console.log(props.data.list[props.todoIdx]);
+               console.log(props.element);*/
+
              }}/>
       <label htmlFor={`listCheck${props.listIdx}_${props.todoIdx}`} className={`
         text-[0] cursor-pointer
         before:content-[''] before:w-[100%] before:h-[100%] before:absolute before:top-[50%] before:left-[0] rem:before:mt-[-4px] before:rounded-100% 
-       
         ${props.listStatus[0].isDone ? dataColor.chart.bg.before200 : "before:bg-white"}
-        
         after:content-[''] rem:after:w-[8px] rem:after:h-[8px] after:absolute after:top-[50%] after:left-[50%]  rem:after:ml-[-4px] after:rounded-100% after:bg-white
       `}
       >{props.listStatus[0].isDone}</label>
@@ -69,7 +91,6 @@ export function MoreButton(props) {
   const dataColor = colorChart.find((color)=> color.name === props.color);
 
   const [isMore, setIsMore] = useState(false);
-  console.log(props.color)
   return (
     <div className="rem:w-[36px] h-[100%] inline-block align-top relative text-[0px] ">
       <button type="button" className={`
@@ -134,18 +155,19 @@ export function CheckList(props) {
       return `${dataColor.chart.text.default500}`
     }
   }
-  console.log(props.isDone, props.isImportant);
+  //console.log(props.isDone, props.isImportant);
+
   return (
     <div className="rem:h-[40px] rem:pt-[18px] text-left">
-      <CheckButton todoIdx={props.todoIdx} listIdx={props.listIdx} listStatus={listStatus}
-                   setListStatus={setListStatus} color={props.color} isShow={props.isShow} isDone={props.isDone} isImportant={props.isImportant}></CheckButton>
-      <input type="text" disabled={listStatus[0].isDone} value={props.content} className={`
+      <CheckButton data={props.data} setData={props.setData} element={props.element} todoIdx={props.todoIdx} listIdx={props.listIdx} listStatus={listStatus}
+                   setListStatus={setListStatus} color={props.color}></CheckButton>
+      <input type="text" disabled={props.element.isDone} value={props.element.content} className={`
         rem:w-[232px] rem:h-[22px] align-top rem:pl-[16px] rem:pr-[10px] rem:text-[16px] box-content bg-transparent
         focus:outline-0 rem:focus:border-b-[1px] focus:border-dashed ${dataColor.chart.border.focus300}
-        ${isActiveCss(props.isDone, props.isImportant)}
+        ${isActiveCss(props.element.isDone, props.element.isImportant)}
       `}
       />
-      <MoreButton listStatus={listStatus} setListStatus={setListStatus} color={props.color} isShow={props.isShow} isDone={props.isDone} isImportant={props.isImportant}></MoreButton>
+      <MoreButton element={props.element} listStatus={listStatus} setListStatus={setListStatus} color={props.color}></MoreButton>
     </div>
   )
 }

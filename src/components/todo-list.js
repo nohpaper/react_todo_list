@@ -59,7 +59,7 @@ export default function TodoList(props){
       }
     ]
   })
-  console.log(data);
+
   useEffect(() => {
     if(!isInputButton){
       //false
@@ -99,10 +99,10 @@ export default function TodoList(props){
               const listIdx = idx;
 
               return <Bord isList={true} color={dataColor}>
-                <Category category={element.category} color={dataColor}/>
+                <Category element={element} idx={idx} category={element.category} color={dataColor}/>
                 <div className="rem:pt-[10px]">
                   {element.todo.map(function(element, idx){
-                    return <CheckList todoIdx={idx} listIdx={listIdx} color={dataColor} content={element.content} isShow={element.isShow} isDone={element.isDone} isImportant={element.isImportant}/>
+                    return <CheckList data={data} setData={setData} element={element} todoIdx={idx} listIdx={listIdx} color={dataColor}/>
                   })}
                 </div>
               </Bord>
@@ -131,39 +131,6 @@ export default function TodoList(props){
                 {data.list.map((element, idx) => <MadeCategory element={element} idx={idx} data={data} setData={setData} colorPicker={colorPicker} setColorPicker={setColorPicker} activeCount={activeCount}/>)}
               </div>
             }
-            {/*
-              --창 열릴 시--
-              1. isInputButton이 true,
-              2. colorPicker 값이 none true 일 경우
-              3. 카테고리 이름 input clean
-              4. 내용 입력 input clean
-
-              등장
-
-              --취소 버튼 클릭 시--
-              1. isInputButton이 true,
-              2. colorPicker 값이 none false 일 경우
-              3. 카테고리 이름 input clean
-              4. 내용 입력 input clean
-
-              퇴장
-
-              --추가 버튼 클릭 시--
-              1. isInputButton이 true,
-              colorPicker 값이 none false 일 경우
-              3. 카테고리 이름 input clean
-              4. 내용 입력 input clean
-
-              퇴장
-
-              --창 닫힐 시--
-              isInputButton이 false
-              colorPicker 값이 none false 일 경우
-              3. 카테고리 이름 input
-              4. 내용 입력 input
-
-              퇴장
-            */}
             <fieldset
               className={`rem:w-[333px] m-auto translate-x-[23.0625rem] opacity-0 duration-500 ease-custom`}
               ref={inputField}>
